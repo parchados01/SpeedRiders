@@ -1,0 +1,117 @@
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SpeedRiders Las mejores motos al mejor precio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>SpeedRiders</h1>
+    <h4>Las mejores motos al mejor precio</h4>
+  </header>
+
+  <main>
+    <!-- Filtro -->
+    <section class="filtro">
+      <label for="filtro-categoria">Filtrar por estilo:</label>
+      <select id="filtro-categoria">
+        <option value="todos">Todos</option>
+        <option value="adrenalina">Adrenalina</option>
+        <option value="versatilidad">Versatilidad</option>
+        <option value="estilo-libre">Estilo Libre</option>
+      </select>
+    </section>
+
+    <!-- Productos -->
+    <section class="productos">
+      <div class="producto adrenalina">
+        <img src="https://i.postimg.cc/RVyGVSfc/Gemini-Generated-Image-ag06n3ag06n3ag06.jpg" alt="Yamaha R1" />
+        <h3>Yamaha R1</h3>
+        <p>Máxima velocidad y rendimiento en cada curva.</p>
+        <p class="precio">$18,000</p>
+        <button class="agregar-carrito" data-nombre="Yamaha R1" data-precio="18000">Agregar al carrito</button>
+      </div>
+
+      <div class="producto versatilidad">
+        <img src="https://i.postimg.cc/0Q4KdQ9n/Gemini-Generated-Image-eza72heza72heza7.jpg" alt="Kawasaki Z900" />
+        <h3>Kawasaki Z900</h3>
+        <p>Diseño agresivo y motor potente para ciudad y carretera.</p>
+        <p class="precio">$9,500</p>
+        <button class="agregar-carrito" data-nombre="Kawasaki Z900" data-precio="9500">Agregar al carrito</button>
+      </div>
+
+      <div class="producto adrenalina">
+        <img src="https://i.postimg.cc/rwTjthnm/Gemini-Generated-Image-mzcgmqmzcgmqmzcg.jpg" alt="BMW S1000RR" />
+        <h3>BMW S1000RR</h3>
+        <p>Una superbike diseñada para la adrenalina pura.</p>
+        <p class="precio">$20,000</p>
+        <button class="agregar-carrito" data-nombre="BMW S1000RR" data-precio="20000">Agregar al carrito</button>
+      </div>
+
+      <div class="producto estilo-libre">
+        <img src="https://i.postimg.cc/kXmKj2xY/Gemini-Generated-Image-7h3v187h3v187h3v.jpg" alt="Harley Davidson" />
+        <h3>Harley Davidson</h3>
+        <p>Estilo y libertad sobre dos ruedas.</p>
+        <p class="precio">$15,000</p>
+        <button class="agregar-carrito" data-nombre="Harley Davidson" data-precio="15000">Agregar al carrito</button>
+      </div>
+    </section>
+
+    <!-- Carrito -->
+    <section id="carrito-section">
+      <h2>Carrito de Compras</h2>
+      <ul id="lista-carrito"></ul>
+      <p>Total: $<span id="total-carrito">0</span></p>
+      <button id="boton-comprar">Comprar</button>
+      <div id="paypal-button-container"></div>
+    </section>
+
+    <!-- Modal -->
+    <div id="modal-confirmacion">
+      <div class="modal-contenido">
+        <h2>¡Pago Exitoso!</h2>
+        <p>Gracias por tu compra en SpeedRiders. ¡Nos vemos en la carretera!</p>
+        <button id="cerrar-modal">Cerrar</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Creado por Leonardo Angulo</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- PayPal SDK -->
+  <script>
+    function cargarPayPal() {
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: document.getElementById('total-carrito').textContent
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            alert('Gracias por tu compra, ' + details.payer.name.given_name + '!');
+            document.getElementById("lista-carrito").innerHTML = "";
+            document.getElementById("total-carrito").textContent = "0";
+            document.getElementById("modal-confirmacion").style.display = "flex";
+          });
+        }
+      }).render('#paypal-button-container');
+    }
+
+    var script = document.createElement('script');
+    script.src = "https://www.paypal.com/sdk/js?client-id=sb&currency=USD";
+    script.onload = cargarPayPal;
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
